@@ -39,23 +39,17 @@
             statusEl.className = 'loading';
             document.body.classList.add('loading');
             
-            try {
-                const res = await fetch('/api/processar', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ evento_id: id })
-                });
-                const data = await res.json();
-                statusEl.textContent = data.message || data.error || 'Erro desconhecido';
-                statusEl.className = data.message ? 'success' : 'error';
-            } catch (err) {
-                statusEl.textContent = 'Erro de conexão: ' + err.message;
-                statusEl.className = 'error';
-            } finally {
-                btn.disabled = false;
-                btn.textContent = 'Processar Cashback';
-                document.body.classList.remove('loading');
+            const res = await fetch('/api/processar', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ evento_id: id })
+            });
+
+            if (!res.ok) {
+                throw new Error(`Erro HTTP: ${res.status}`);
             }
+
+            const data = await res.json();
         }
     </script>
 </body>
