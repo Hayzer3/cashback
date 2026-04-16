@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>BulbaCash - Eco-Awareness</title>
+    <style>
+        body { background: #1a2520; color: #e0f2e9; font-family: sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; flex-direction: column; padding: 20px; }
+        .card { background: #23342d; border: 2px solid #5bc68b; padding: 20px; border-radius: 15px; text-align: center; max-width: 650px; width: 100%; box-shadow: 0 4px 15px rgba(91, 198, 139, 0.2); }
+        .header-container { display: flex; align-items: center; justify-content: center; gap: 15px; }
+        .bulba-img { width: 80px; image-rendering: pixelated; }
+        h1 { color: #5bc68b; margin-bottom: 5px; }
+        button { border: none; padding: 10px 20px; cursor: pointer; font-weight: bold; border-radius: 5px; margin-top: 10px; transition: 0.2s; }
+        button:hover { filter: brightness(1.1); }
+        .btn-comprar { background: #4ba39d; color: #fff; } /* Azul esverdeado da pele do Bulba */
+        .btn-processar { background: #5bc68b; color: #1a2520; width: 100%; font-size: 16px; padding: 15px; text-transform: uppercase;} /* Verde do bulbo */
+        input, select { padding: 8px; margin-top: 10px; border-radius: 3px; border: 1px solid #4ba39d; background: #1a2520; color: white; outline: none; }
+        .msg { margin-top: 15px; font-weight: bold; padding: 10px; border-radius: 5px; }
+        .success { background: rgba(91, 198, 139, 0.2); color: #5bc68b; border: 1px solid #5bc68b; }
+        .error { background: rgba(255, 68, 68, 0.2); color: #ff4444; border: 1px solid #ff4444; }
+        .warning { background: rgba(241, 196, 15, 0.2); color: #f1c40f; border: 1px solid #f1c40f; }
+        table { width: 100%; margin-top: 20px; border-collapse: collapse; text-align: left; font-size: 14px; background: #1a2520; border-radius: 8px; overflow: hidden; }
+        th, td { padding: 12px; border-bottom: 1px solid #23342d; }
+        th { background: #5bc68b; color: #1a2520; }
+        hr { border: 1px solid #4ba39d; margin: 25px 0; opacity: 0.5; }
+        .section-title { color: #5bc68b; margin-bottom: 5px; text-align: left; font-size: 18px;}
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="header-container">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/1.gif" alt="Bulbassauro" class="bulba-img">
+            <div>
+                <h1>BulbaCash</h1>
+                <p style="margin: 0;">Eco-Awareness 2026 - Cashback Progressivo</p>
+            </div>
+        </div>
+        
+        <hr>
+        
+        <div style="text-align: left;">
+            <p class="section-title">1. Comprar Ingresso</p>
+            <p style="font-size: 12px; color: #a1b8ae; margin-top: 0;">Invista no evento e garanta sua presença.</p>
+        </div>
+        <form action="/comprar" method="post" style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; align-items: center;">
+            <input type="number" name="usuario_id" placeholder="ID Usuário" required style="width: 100px;">
+            <input type="number" name="evento_id" placeholder="ID Evento" required style="width: 100px;">
+            <input type="number" step="0.01" name="valor" placeholder="R$ Valor" required style="width: 100px;">
+            <select name="tipo" required>
+                <option value="COMUM">COMUM</option>
+                <option value="VIP">VIP</option>
+            </select>
+            <button type="submit" class="btn-comprar">Comprar</button>
+        </form>
+
+        <hr>
+        
+        <div style="text-align: left;">
+            <p class="section-title">2. Acumular BulbaCash (Fim do Evento)</p>
+            <p style="font-size: 12px; color: #a1b8ae; margin-top: 0;">Dispara o Cursor Explícito e distribui os créditos sustentáveis.</p>
+        </div>
+        <form action="/processar" method="post">
+            <input type="number" name="evento_id" placeholder="ID do Evento Finalizado" required style="width: 100%; box-sizing: border-box; text-align: center; font-size: 16px;">
+            <br>
+            <button type="submit" class="btn-processar">Distribuir BulbaCash</button>
+        </form>
+        
+        {% if mensagem %} <p class="msg success">{{ mensagem }}</p> {% endif %}
+        {% if aviso %} <p class="msg warning">{{ aviso }}</p> {% endif %}
+        {% if erro %} <p class="msg error">{{ erro }}</p> {% endif %}
+
+        {% if usuarios %}
+            <table>
+                <thead><tr><th>ID</th><th>Membro</th><th>BulbaCash Acumulado</th></tr></thead>
+                <tbody>
+                    {% for u in usuarios %}
+                    <tr><td>{{ u[0] }}</td><td>{{ u[1] }}</td><td>🌿 BC$ {{ "%.2f"|format(u[2]) }}</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+
+        {% if historico %}
+            <hr>
+            <p class="section-title">Histórico de Auditoria</p>
+            <table>
+                <thead><tr><th>Data</th><th>Registro</th></tr></thead>
+                <tbody>
+                    {% for h in historico %}
+                    <tr><td>{{ h[0] }}</td><td>{{ h[1] }}</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+    </div>
+</body>
+</html>
